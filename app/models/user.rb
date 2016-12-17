@@ -20,11 +20,11 @@ class User < ApplicationRecord
 
   # this method accepts a column name so we can have multiple token columns later on and makes sure 
   # that the token is unique by making sure no other user has that same token, 
-  # if another user witht that same token does exist then it goes through that loop again generating a new randon string.
+  # if another user with that same token does exist then it goes through that loop again generating a new randon string.
   def generate_token(column)
     begin
-      self(column) = SecureRandom.urlsafe_base64
-    end while User.exists?(column => self(column))
+      self[column] = SecureRandom.urlsafe_base64
+    end while User.exists?(column => self[column])
   end
 
 end
