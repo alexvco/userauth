@@ -12,8 +12,19 @@ class User < ApplicationRecord
   ## Callbacks
   ##============================================================##
   before_save   :downcase_email
+  before_create   { generate_token(:auth_token) }
 
   def downcase_email
     self.email = email.downcase
   end
+
+  # this method accepts a column name so we can have multiple token columns later on and makes sure 
+  # that the token is unique by making sure no other user has that same token, 
+  # if another user witht that same token does exist then it goes through that loop again generating a new randon string.
+  def generate_token(column)
+    begin
+      self(column) = SecureRandom.urlsafe_base64
+    end while User.exists?(column => self(column))
+  end
+
 end
