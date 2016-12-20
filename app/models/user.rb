@@ -34,4 +34,8 @@ class User < ApplicationRecord
     UserMailer.password_reset(self).deliver
   end
 
+  def is_activated?
+    return true
+  end
+
 end
