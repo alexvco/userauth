@@ -34,8 +34,14 @@ class User < ApplicationRecord
     UserMailer.password_reset(self).deliver
   end
 
+  def send_activation_token
+    generate_token(:activation_token)
+    save!
+    UserMailer.account_activation(self).deliver
+  end
+
   def is_activated?
-    return true
+    self.is_activated
   end
 
 end

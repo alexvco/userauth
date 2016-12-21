@@ -31,8 +31,8 @@ module Userauth
       :address        => "smtp.gmail.com",
       :port           => 587,
       :authentication => :plain,
-      :user_name      => "zzz@gmail.com",
-      :password       => "zzz",
+      :user_name      => ENV["MY_EMAIL"],
+      :password       => ENV["MY_EMAIL_PASSWORD"],
       :enable_starttls_auto => true
     }
 

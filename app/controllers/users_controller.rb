@@ -28,8 +28,10 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     respond_to do |format|
       if @user.save
-        cookies[:auth_token] = @user.auth_token
-        format.html { redirect_to @user, notice: 'User was successfully created.' }
+        @user.send_activation_token
+        # cookies[:auth_token] = @user.auth_token #this is no longer true as we require to activate account before logging him in.
+        flash[:info] = "Please check your email to activate account"
+        format.html { redirect_to root_url }
         format.json { render :show, status: :created, location: @user }
       else
         format.html { render :new }
@@ -69,7 +71,9 @@ class UsersController < ApplicationController
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
+    # No need to put auth_token, password_reset_token, activation_token, activated_at and other params that the user will not be filling up through forms
+    # Instead we will save these methods either through callbacks or inside the controller actions.
     def user_params
-      params.require(:user).permit(:email, :password, :password_confirmation, :auth_token)
+      params.require(:user).permit(:email, :password, :password_confirmation)
     end
 end

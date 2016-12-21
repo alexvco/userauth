@@ -12,4 +12,6 @@ Rails.application.routes.draw do
   match 'login'  =>  'sessions#create',  via: [:post]
   match 'logout'  =>  'sessions#destroy',  via: [:delete], :as => "logout"
 
+  match '/account_activations/:activation_token/edit'  =>  'account_activations#edit',  via: [:get],  :as => "edit_account_activation"
+
 end
